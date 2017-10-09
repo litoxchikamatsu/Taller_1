@@ -1,0 +1,13 @@
+Integrantes:
+
+Andres Higuita Maturana
+Carlos Alberto Correa Ortiz
+
+Cree un tablespace llamado gofar_travel de una 1Gb de tamaño y 3 datafiles.
+create tablespace gofar_travel datafile 'C:/BasesDeDatos/gofar_travel01.dbf' size 342M,'C:/BasesDeDatos/gofar_travel02.dbf' size 342M,'C:/BasesDeDatos/gofar_travel03.dbf' size 342M;
+
+Cree un segundo tablespace de 500Mb y un datafile llamado test_purposes
+create tablespace test_purposes datafile 'C:/BasesDeDatos/test_purpose01.dbf' size 500M;
+
+Cree un tercer tablespace de tipo Undo de 5Mb de espacio y un datafile
+create undo tablespace table_undo datafile 'C:/BasesDeDatos/table_undo01.dbf' size 5M;
