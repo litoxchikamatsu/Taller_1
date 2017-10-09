@@ -11,3 +11,45 @@ create tablespace test_purposes datafile 'C:/BasesDeDatos/test_purpose01.dbf' si
 
 Cree un tercer tablespace de tipo Undo de 5Mb de espacio y un datafile
 create undo tablespace table_undo datafile 'C:/BasesDeDatos/table_undo01.dbf' size 5M;
+
+ Set the undo tablespace to be used in the system
+ alter system set undo_tablespace =table_undo scope=both;
+
+Create a DBA user and assign it to the tablespace called "gofar_travel", this user has unlimited space on the tablespace
+create user litox identified by oracle default tablespace gofar_travel temporary tablespace temp;
+
+Assign the dba role and permissions to connect to the user just created
+ grant connect, resource to litox;
+ 
+  Delete the tablespace called test_purposes
+ alter tablespace test_purposes offline;
+ drop tablespace test_purposes;
+
+ Profile 1: "manager" password life 40 days, one session per user, 15 minutes idle, 4 failed login attempts
+ create profile manager limit password_grace_time 40 sessions_per_user 1 idle_time 15 failed_login_attempts 4;
+  
+ Profile 2: "finance" password life 15 days, one session per user, 3 minutes idle, 2 failed login attempts 
+ create profile finance limit password_grace_time 15 sessions_per_user 1 idle_time 3 failed_login_attempts 2;
+ 
+ Profile 3: "development" password life 100 days, two session per user, 30 minutes idle, no failed login attempts
+ create profile development limit password_grace_time 100 sessions_per_user 2 idle_time 30;
+ 
+ Create 4 users, assign them the tablespace "gofar_travel"; profiles created should be used for the users, all the
+ users should be allow to connect to the database
+ 
+ create user pinker identified by oracle default tablespace gofar_travel temporary tablespace temp;
+ grant connect, resource to pinker;
+ alter user pinker profile manager;
+ 
+ create user olga identified by oracle default tablespace gofar_travel temporary tablespace temp;
+ grant connect, resource to olga;
+ alter user olga profile finance;
+ 
+ create user caco identified by oracle default tablespace gofar_travel temporary tablespace temp
+ grant connect, resource to caco;
+ alter user caco profile finance;
+ 
+ create user sara identified by oracle default tablespace gofar_travel temporary tablespace temp;
+ grant connect, resource to sara;
+ alter user sara profile development;
+ 
